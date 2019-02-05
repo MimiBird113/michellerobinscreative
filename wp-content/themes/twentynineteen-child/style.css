@@ -1,0 +1,239 @@
+/*
+Theme Name: Twenty Nineteen Child
+Theme URI: https://example.com/twentynineteen-child
+Author: Michelle Robins
+Author URI: https://example.com/
+Template: twentynineteen
+License: GNU General Public License v2 or later
+License URI: LICENSE
+Text Domain: twentynineteen-child
+Tags: one-column, flexible-header, accessibility-ready, custom-colors, custom-menu, custom-logo, editor-style, featured-images, footer-widgets, rtl-language-support, sticky-post, threaded-comments, translation-ready
+
+*/
+
+.site-header .featured-image:after {
+  background: none;
+}
+
+
+#masthead {
+  background: url("img/hero-1.jpg") no-repeat top center;
+  background-size: cover;
+  padding: 0;
+  margin: 0;
+}
+
+.home-page {
+  padding-top: 5%;
+  background: url("img/hero-1.jpg") no-repeat center center;
+  background-size: cover;
+}
+
+.button, input[type="submit"] {
+  background: none repeat #84013a;
+  float: right;
+  margin: 5% 0;
+  outline: 1px solid #b79cac;
+  outline-offset: -10px;
+
+}
+
+.site-title {
+  font-family: 'Stalemate';
+  font-size: 64px;
+  float: left;
+  padding-top: 2%;
+}
+
+.site-title a {
+  color: black!important;
+}
+
+
+.main-menu li a {
+  font-family: 'Cinzel' ;
+  color: black!important;
+  font-size: 21px;
+}
+
+#menu-main-menu {
+  float: right;
+  margin-top: 4%!important;
+}
+
+.rectangle-1, .rectangle-2 {
+  background-color: white;
+}
+
+.rectangle-1 {
+  width: 70%;
+}
+
+.rectangle-2 {
+  width: 85%;
+}
+
+.line-1, .line-2 {
+  font-family: 'Cinzel';
+  font-size: 36px;
+  padding-left: 2%;
+  display: block;
+}
+
+.headliner {
+  margin-left: 15%;
+  padding-top: 50px;
+  padding-bottom: 250px;
+}
+
+.sales-button-1 {
+  margin-right: 5%;
+  padding-top: 5%;
+
+}
+
+.sales-button-1 a {
+  font-family: "Mr De Haviland", cursive;
+  font-size: 36px;
+  font-weight: normal;
+  letter-spacing: .07em;
+}
+
+.sales-button-2, .sales-button-3 {
+  display: flex;
+  justify-content: center;
+}
+
+.sales-button-2 a, .sales-button-3 a {
+  font-family: "Raleway";
+  font-weight: normal;
+  text-align: center;
+}
+
+
+.section-1 {
+  background-color: white;
+  margin-left: 4%;
+  padding-top: 3%;
+  }
+
+
+
+p, h2, h3 {
+  font-family: 'Raleway';
+}
+
+p {
+  font-size: 18px;
+}
+
+h3 {
+  font-size: 28px;
+  text-align: center;
+}
+
+
+a.button, a.button:link, input[type="submit"] {
+	color:#fff;
+}
+
+a.button:hover, input[type="submit"]:hover {
+  background: none repeat #84013a;
+  float: right;
+  margin: 5% 0;
+  outline: 1px solid #b79cac;
+  outline-offset: -10px;
+}
+
+.section-3 {
+  background: url("img/sales.png") no-repeat top center;
+  background-size: cover;
+  margin-left: -4.15%;
+}
+
+
+.section-3 h3, .section-3 p {
+  margin-left: 8%;
+  margin-right: 8%;
+  padding-top: 5%;
+}
+
+.thought-1, .thought-2, .thought-3 {
+  float: left;
+  text-align: center;
+  width: 33%;
+
+}
+
+.thoughts {
+  padding-top: 10%;
+}
+
+.bottom-half {
+  padding-top: 13%;
+  clear: both;
+  padding-bottom: 10%;
+}
+
+.divide {
+  background-color: white;
+  opacity: 0.75;
+  padding: 1%!important;
+}
+.about-me {
+  background: url("img/about.jpg") no-repeat top center;
+  background-size: cover;
+  margin-left: -4.15%;
+}
+
+.about-me p, .about-me h3 {
+  margin-left: 15%;
+}
+
+.half-width {
+  width: 50%;
+}
+
+.words {
+  float: left;
+}
+
+.photo {
+  float: right;
+  max-width: 35%;
+}
+
+.photo img {
+  padding: 2% 10%;
+}
+
+.about-me h3, .contact h3 {
+  text-align: left;
+}
+
+.contact {
+  clear: both;
+  background: url("img/contact.jpg") no-repeat center;
+  background-size: cover;
+  margin-left: -4.15%;
+}
+
+textarea, input {
+  opacity: 0.7;
+}
+
+.contact h3 {
+  padding-top: 5%!important;
+}
+
+.contact h3, .form {
+  padding: 0 5%;
+}
+
+.form {
+  padding-bottom: 5%;
+}
+
+input[type="submit"] {
+  opacity: 1;
+}
