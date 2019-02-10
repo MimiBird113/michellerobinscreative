@@ -23,7 +23,7 @@ get_header(); ?>
 				<p class="line-2">to a custom WordPress developer who gets you?</p>
 			</div>
 		<div class="sales-button-1">
-			<a class="button" href="#">Book A Call to Get Started!</a>
+			<a class="button" href="https://calendly.com/michellerobinscreative" target="_blank">Book A Call to Get Started!</a>
 		</div>
 	</div> <!-- headliner -->
 	</div><!-- .main-content -->
@@ -40,7 +40,7 @@ get_header(); ?>
 			<li>Are you lacking the time or desire to try to teach yourself to put an amazing website together?</li>
 			<li>Are you sick of your current website but overwhelmed by all the work that would go into making it match your expertise?</li>
 		</ul>
-		<div class="sales-button-2"><a class="button" href="#">Sound like you? <br>Find out how we can work together!</a>
+		<div class="sales-button-2"><a class="button" href="https://calendly.com/michellerobinscreative" target="_blank">Sound like you? <br>Find out how we can work together!</a>
 		</div>
 	</div>
 
@@ -70,7 +70,7 @@ get_header(); ?>
 	</div>
 
 	<div class="sales-button-3">
-		<a class="button" href="#">Are you ready to take the next step in your design business?<br>Book a call now!</a>
+		<a class="button" href="https://calendly.com/michellerobinscreative" target="_blank">Are you ready to take the next step in your design business?<br>Book a call now!</a>
 	</div>
 
 	<div class="about-me" id="about">
