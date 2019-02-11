@@ -49,15 +49,15 @@ get_header(); ?>
 			<h3>You're in the right place if you've ever thought these things before</h3>
 			<div class="thoughts">
 				<div class="thought-1">
-					<img src="/img/pillow-icon.png">
+					<img src="http://mimirobins.wpengine.com/wp-content/uploads/2019/02/pillow-icon.png" alt="pillow icon">
 					<p>Coding is boring! Drag-and-drops may be limited, but they’ve been good enough for me so far.</p>
 				</div>
 				<div class="thought-2">
-					<img src="/img/gear-icon.png">
+					<img src="http://mimirobins.wpengine.com/wp-content/uploads/2019/02/gear-icon.png" alt="gear icon">
 					<p>I can make myself code, even though it takes forever and it's not my favorite part of the process.</p>
 				</div>
 				<div class="thought-3">
-					<img src="/img/lightbulb-icon.png">
+					<img src="http://mimirobins.wpengine.com/wp-content/uploads/2019/02/lightbulb-icon.png" alt="lightbulb icon">
 					<p>Developers just don't understand anything about design - we couldn't possibly collaborate!</p>
 				</div>
 			</div>
@@ -79,7 +79,7 @@ get_header(); ?>
 			<p>Consider me your website-building partner in crime! As a designer-turned-developer, I work with professionals like you to help take the confusion and dread out of making a functional website that reflects your business at its best. With your design expertise - gorgeous mockups and flawless brand building, paired  with my code wrangling - custom WordPress themes and solutions, together we can come up with a solution that will allow you to stop worrying about your next website and instead focus your valuable time and energy on what you do best: creating breathtaking designs!</p>
 		</div>
 		<div class="photo half-width">
-			<img src="/img/img-me.jpg"></div>
+			<img src="http://mimirobins.wpengine.com/wp-content/uploads/2019/02/IMG_4153a.jpg" alt="photo of me"></div>
 		</div>
 
 		<?php while ( have_posts() ) : the_post(); ?>
