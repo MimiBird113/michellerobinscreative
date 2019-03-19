@@ -36,7 +36,11 @@
         transform: scale(.8);
         will-change: transform, opacity;
 
-        * + * {
+        > * {
+            max-width: 100%;
+        }
+
+        > * + * {
             margin-top: 4px;
         }
     }
@@ -95,6 +99,10 @@
     }
 
     // align
+    .vp-portfolio__item-align-center .vp-portfolio__item-meta {
+        align-items: center;
+        text-align: center;
+    }
     .vp-portfolio__item-align-left .vp-portfolio__item-meta {
         align-items: flex-start;
         text-align: left;

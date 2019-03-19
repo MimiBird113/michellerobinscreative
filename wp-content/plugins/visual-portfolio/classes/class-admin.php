@@ -152,8 +152,8 @@ class Visual_Portfolio_Admin {
         wp_enqueue_script( 'tooltip.js', visual_portfolio()->plugin_url . 'assets/vendor/popper.js/tooltip.min.js', array( 'popper.js' ), '1.14.3', true );
         wp_enqueue_style( 'popper.js', visual_portfolio()->plugin_url . 'assets/vendor/popper.js/popper.css', '', '1.14.3' );
 
-        wp_enqueue_script( 'visual-portfolio-admin', visual_portfolio()->plugin_url . 'assets/admin/js/script.min.js', array( 'jquery' ), '1.9.3', true );
-        wp_enqueue_style( 'visual-portfolio-admin', visual_portfolio()->plugin_url . 'assets/admin/css/style.min.css', '', '1.9.3' );
+        wp_enqueue_script( 'visual-portfolio-admin', visual_portfolio()->plugin_url . 'assets/admin/js/script.min.js', array( 'jquery' ), '1.10.0', true );
+        wp_enqueue_style( 'visual-portfolio-admin', visual_portfolio()->plugin_url . 'assets/admin/css/style.min.css', '', '1.10.0' );
         wp_localize_script( 'visual-portfolio-admin', 'VPAdminVariables', $data_init );
     }
 
@@ -221,6 +221,7 @@ class Visual_Portfolio_Admin {
                     'not_found_in_trash'  => __( 'Not found in Trash', 'visual-portfolio' ),
                 ),
                 'public'       => true,
+                'publicly_queryable' => true,
                 'has_archive'  => false,
                 'show_ui'      => true,
 
@@ -250,6 +251,7 @@ class Visual_Portfolio_Admin {
                 'supports' => array(
                     'title',
                     'editor',
+                    'author',
                     'thumbnail',
                     'revisions',
                     'excerpt',
@@ -258,12 +260,6 @@ class Visual_Portfolio_Admin {
                 ),
             )
         );
-
-        // fix for paged /portfolio/ page.
-        add_rewrite_rule( '^portfolio/page/([0-9]+)', 'index.php?pagename=portfolio&paged=$matches[1]', 'top' );
-        if ( $custom_slug && 'portfolio' !== $custom_slug ) {
-            add_rewrite_rule( '^' . $custom_slug . '/page/([0-9]+)', 'index.php?pagename=' . $custom_slug . '&paged=$matches[1]', 'top' );
-        }
 
         register_taxonomy(
             'portfolio_category', 'portfolio', array(
@@ -444,11 +440,11 @@ class Visual_Portfolio_Admin {
 
         foreach ( $meta as $item ) {
             if ( isset( $_POST[ $item ] ) ) {
-
-                $result = sanitize_text_field( wp_unslash( $_POST[ $item ] ) );
-
-                if ( 'Array' === $result ) {
+                // phpcs:ignore
+                if ( is_array( $_POST[ $item ] ) ) {
                     $result = array_map( 'sanitize_text_field', wp_unslash( $_POST[ $item ] ) );
+                } else {
+                    $result = sanitize_text_field( wp_unslash( $_POST[ $item ] ) );
                 }
 
                 update_post_meta( $post_id, $item, $result );
@@ -850,6 +846,21 @@ class Visual_Portfolio_Admin {
                 ),
             ),
 
+            // Grid.
+            'grid' => array(
+                'title' => esc_html__( 'Grid', 'visual-portfolio' ),
+                'controls' => array(
+                    array(
+                        'type'  => 'range',
+                        'label' => esc_html__( 'Columns', 'visual-portfolio' ),
+                        'name'  => 'columns',
+                        'min'   => 1,
+                        'max'   => 5,
+                        'default' => 3,
+                    ),
+                ),
+            ),
+
             // Justified.
             'justified' => array(
                 'title' => esc_html__( 'Justified', 'visual-portfolio' ),
@@ -906,6 +917,19 @@ class Visual_Portfolio_Admin {
                         'max'   => 20,
                         'step'  => 0.2,
                         'default' => 6,
+                    ),
+                    array(
+                        'type'    => 'toggle',
+                        'label'   => esc_html__( 'Pause on Mouse Over', 'visual-portfolio' ),
+                        'name'    => 'autoplay_hover_pause',
+                        'default' => false,
+                        'condition' => array(
+                            array(
+                                'control' => 'autoplay',
+                                'operator' => '>',
+                                'value' => 0,
+                            ),
+                        ),
                     ),
                     array(
                         'type'        => 'select2',
@@ -1006,6 +1030,17 @@ class Visual_Portfolio_Admin {
                         'label'   => esc_html__( 'Free scroll', 'visual-portfolio' ),
                         'name'    => 'free_mode',
                         'default' => false,
+                    ),
+                    array(
+                        'type'    => 'toggle',
+                        'label'   => esc_html__( 'Free scroll Sticky', 'visual-portfolio' ),
+                        'name'    => 'free_mode_sticky',
+                        'default' => false,
+                        'condition' => array(
+                            array(
+                                'control' => 'free_mode',
+                            ),
+                        ),
                     ),
                     array(
                         'type'    => 'toggle',
@@ -2311,6 +2346,37 @@ class Visual_Portfolio_Admin {
                      * video_url - video url.
                      */
                 ),
+                'wrapper_class' => 'vp-col-12',
+            )
+        );
+        Visual_Portfolio_Controls::register(
+            array(
+                'category' => 'content-source-images',
+                'type'     => 'select2',
+                'label'    => esc_html__( 'Order by', 'visual-portfolio' ),
+                'name'     => 'vp_images_order_by',
+                'default'  => 'default',
+                'options'  => array(
+                    'default' => esc_html__( 'Default', 'visual-portfolio' ),
+                    'date'    => esc_html__( 'Uploaded', 'visual-portfolio' ),
+                    'title'   => esc_html__( 'Title', 'visual-portfolio' ),
+                    'rand'    => esc_html__( 'Random', 'visual-portfolio' ),
+                ),
+                'wrapper_class' => 'vp-col-6',
+            )
+        );
+        Visual_Portfolio_Controls::register(
+            array(
+                'category' => 'content-source-images',
+                'type'     => 'select2',
+                'label'    => esc_html__( 'Order direction', 'visual-portfolio' ),
+                'name'     => 'vp_images_order_direction',
+                'default'  => 'asc',
+                'options'  => array(
+                    'asc'  => esc_html__( 'ASC', 'visual-portfolio' ),
+                    'desc' => esc_html__( 'DESC', 'visual-portfolio' ),
+                ),
+                'wrapper_class' => 'vp-col-6',
             )
         );
 
@@ -2604,9 +2670,11 @@ class Visual_Portfolio_Admin {
                     <!-- Images -->
 
                     <p></p>
-                    <?php
-                    Visual_Portfolio_Controls::get_registered( 'content-source-images' );
-                    ?>
+                    <div class="vp-row">
+                        <?php
+                        Visual_Portfolio_Controls::get_registered( 'content-source-images' );
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2656,11 +2724,12 @@ class Visual_Portfolio_Admin {
                     // phpcs:ignore
                     $result = wp_kses( $_POST[ $item ], array( '\'', '\"' ) );
                 } else {
-                    $result = sanitize_text_field( wp_unslash( $_POST[ $item ] ) );
-                }
-
-                if ( 'Array' === $result ) {
-                    $result = array_map( 'sanitize_text_field', wp_unslash( $_POST[ $item ] ) );
+                    // phpcs:ignore
+                    if ( is_array( $_POST[ $item ] ) ) {
+                        $result = array_map( 'sanitize_text_field', wp_unslash( $_POST[ $item ] ) );
+                    } else {
+                        $result = sanitize_text_field( wp_unslash( $_POST[ $item ] ) );
+                    }
                 }
 
                 update_post_meta( $post_id, $item, $result );

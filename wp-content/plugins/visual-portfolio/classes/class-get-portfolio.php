@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Slugify.
-if ( version_compare( PHP_VERSION, '5.5.9' ) >= 0 ) {
+if ( version_compare( PHP_VERSION, '5.5.9' ) >= 0 && ! class_exists( 'Cocur\Slugify\Slugify' ) ) {
     require_once( visual_portfolio()->plugin_path . 'vendors/slugify/RuleProvider/RuleProviderInterface.php' );
     require_once( visual_portfolio()->plugin_path . 'vendors/slugify/RuleProvider/DefaultRuleProvider.php' );
     require_once( visual_portfolio()->plugin_path . 'vendors/slugify/SlugifyInterface.php' );
@@ -170,13 +170,20 @@ class Visual_Portfolio_Get {
         $img_size_md_popup = 'vp_md';
         $img_size = 'vp_xl';
         $columns_count = false;
-        if ( 'masonry' === $options['vp_layout'] ) {
-            $columns_count = (int) $options['vp_masonry_columns'];
+
+        switch ( $options['vp_layout'] ) {
+            case 'masonry':
+                $columns_count = (int) $options['vp_masonry_columns'];
+                break;
+            case 'grid':
+                $columns_count = (int) $options['vp_grid_columns'];
+                break;
+            case 'tiles':
+                $columns_count = explode( '|', $options['vp_tiles_type'], 1 );
+                $columns_count = (int) $columns_count[0];
+                break;
         }
-        if ( 'tiles' === $options['vp_layout'] ) {
-            $columns_count = explode( '|', $options['vp_tiles_type'], 1 );
-            $columns_count = (int) $columns_count[0];
-        }
+
         switch ( $columns_count ) {
             case 1:
                 $img_size = 'vp_xl';
@@ -240,16 +247,21 @@ class Visual_Portfolio_Get {
             'data-vp-pagination' => $options['vp_pagination'],
             'data-vp-next-page-url' => $next_page_url,
         );
+
         if ( 'tiles' === $options['vp_layout'] || $is_preview ) {
             $data_atts['data-vp-tiles-type'] = $options['vp_tiles_type'];
         }
         if ( 'masonry' === $options['vp_layout'] || $is_preview ) {
             $data_atts['data-vp-masonry-columns'] = $options['vp_masonry_columns'];
         }
+        if ( 'grid' === $options['vp_layout'] || $is_preview ) {
+            $data_atts['data-vp-grid-columns'] = $options['vp_grid_columns'];
+        }
         if ( 'justified' === $options['vp_layout'] || $is_preview ) {
             $data_atts['data-vp-justified-row-height'] = $options['vp_justified_row_height'];
             $data_atts['data-vp-justified-row-height-tolerance'] = $options['vp_justified_row_height_tolerance'];
         }
+
         if ( 'slider' === $options['vp_layout'] || $is_preview ) {
             $data_atts['data-vp-slider-effect'] = $options['vp_slider_effect'];
 
@@ -278,9 +290,11 @@ class Visual_Portfolio_Get {
 
             $data_atts['data-vp-slider-speed'] = $options['vp_slider_speed'];
             $data_atts['data-vp-slider-autoplay'] = $options['vp_slider_autoplay'];
+            $data_atts['data-vp-slider-autoplay-hover-pause'] = $options['vp_slider_autoplay_hover_pause'] ? 'true' : 'false';
             $data_atts['data-vp-slider-centered-slides'] = $options['vp_slider_centered_slides'] ? 'true' : 'false';
             $data_atts['data-vp-slider-loop'] = $options['vp_slider_loop'] ? 'true' : 'false';
             $data_atts['data-vp-slider-free-mode'] = $options['vp_slider_free_mode'] ? 'true' : 'false';
+            $data_atts['data-vp-slider-free-mode-sticky'] = $options['vp_slider_free_mode_sticky'] ? 'true' : 'false';
             $data_atts['data-vp-slider-arrows'] = $options['vp_slider_arrows'] ? 'true' : 'false';
             $data_atts['data-vp-slider-arrows-icon-prev'] = $options['vp_slider_arrows_icon_prev'] ? : '';
             $data_atts['data-vp-slider-arrows-icon-next'] = $options['vp_slider_arrows_icon_next'] ? : '';
@@ -476,7 +490,7 @@ class Visual_Portfolio_Get {
                             'format'          => get_post_format() ? : 'standard',
                             'published_time'  => get_the_time( 'U' ),
                             'filter'          => implode( ',', $filter_values ),
-                            'image_id'        => get_post_thumbnail_id( get_the_ID() ),
+                            'image_id'        => 'attachment' === get_post_type() ? get_the_ID() : get_post_thumbnail_id( get_the_ID() ),
                             'categories'      => $categories,
                         ) );
 
@@ -613,6 +627,41 @@ class Visual_Portfolio_Get {
     static private $rand_seed_session = false;
 
     /**
+     * "rand" orderby don't work fine for paged, so we need to use custom solution.
+     * thanks to https://gist.github.com/hlashbrooke/6298714 .
+     */
+    private static function get_rand_seed_session() {
+        // phpcs:disable WordPress.VIP.SessionVariableUsage.SessionVarsProhibited
+
+        // already prepared.
+        if ( self::$rand_seed_session ) {
+            return self::$rand_seed_session;
+        }
+
+        // Reset vpf_random_seed on load of initial archive page.
+        if ( self::get_current_page_number() === 1 ) {
+            if ( isset( $_SESSION['vpf_random_seed'] ) ) {
+                unset( $_SESSION['vpf_random_seed'] );
+            }
+        }
+
+        // Get vpf_random_seed from session variable if it exists.
+        if ( isset( $_SESSION['vpf_random_seed'] ) ) {
+            self::$rand_seed_session = $_SESSION['vpf_random_seed'];
+        }
+
+        // Set new vpf_random_seed if none exists.
+        if ( ! self::$rand_seed_session ) {
+            self::$rand_seed_session = rand();
+            $_SESSION['vpf_random_seed'] = self::$rand_seed_session;
+        }
+
+        // phpcs:enable WordPress.VIP.SessionVariableUsage.SessionVarsProhibited
+
+        return self::$rand_seed_session;
+    }
+
+    /**
      * Get query params array.
      *
      * @param array $options portfolio options.
@@ -657,6 +706,46 @@ class Visual_Portfolio_Get {
                 $images = (array) $options['vp_images'];
             }
 
+            // order.
+            if ( isset( $options['vp_images_order_by'] ) && ! empty( $images ) ) {
+                switch ( $options['vp_images_order_by'] ) {
+                    case 'date':
+                    case 'title':
+                        $sort_tmp = array();
+                        $new_images = array();
+                        $sort_by = 'id';
+
+                        if ( 'title' === $options['vp_images_order_by'] ) {
+                            $sort_by = 'title';
+                        }
+
+                        foreach ( $images as &$ma ) {
+                            $sort_tmp[] = &$ma[ $sort_by ];
+                        }
+
+                        array_multisort( $sort_tmp, $images );
+                        foreach ( $images as &$ma ) {
+                            $new_images[] = $ma;
+                        }
+
+                        $images = $new_images;
+                        break;
+                    case 'rand':
+                        mt_srand( self::get_rand_seed_session() );
+                        for ( $i = count( $images ) - 1; $i > 0; $i-- ) {
+                            $j = @mt_rand( 0, $i );
+                            $tmp = $images[ $i ];
+                            $images[ $i ] = $images[ $j ];
+                            $images[ $j ] = $tmp;
+                        }
+                        break;
+                }
+                if ( 'desc' === $options['vp_images_order_direction'] ) {
+                    $images = array_reverse( $images );
+                }
+            }
+
+            // pages count.
             $query_opts['max_num_pages'] = ceil( count( $images ) / $count );
 
             $start_from_item = ( $paged - 1 ) * $count;
@@ -709,36 +798,9 @@ class Visual_Portfolio_Get {
                         $query_opts['orderby'] = 'menu_order';
                         break;
 
-                    // "rand" orderby don't work fine for paged, so we need to use custom solution.
-                    // thanks to https://gist.github.com/hlashbrooke/6298714 .
                     case 'rand':
-                        // phpcs:disable WordPress.VIP.SessionVariableUsage.SessionVarsProhibited
-
-                        // cache data to further use.
-                        if ( ! self::$rand_seed_session ) {
-                            // Reset vpf_random_seed on load of initial archive page.
-                            if ( self::get_current_page_number() === 1 ) {
-                                if ( isset( $_SESSION['vpf_random_seed'] ) ) {
-                                    unset( $_SESSION['vpf_random_seed'] );
-                                }
-                            }
-
-                            // Get vpf_random_seed from session variable if it exists.
-                            if ( isset( $_SESSION['vpf_random_seed'] ) ) {
-                                self::$rand_seed_session = $_SESSION['vpf_random_seed'];
-                            }
-
-                            // Set new vpf_random_seed if none exists.
-                            if ( ! self::$rand_seed_session ) {
-                                self::$rand_seed_session = rand();
-                                $_SESSION['vpf_random_seed'] = self::$rand_seed_session;
-                            }
-                        }
-
                         // Update ORDER BY clause to use vpf_random_seed.
-                        $query_opts['orderby'] = 'RAND(' . self::$rand_seed_session . ')';
-
-                        // phpcs:enable WordPress.VIP.SessionVariableUsage.SessionVarsProhibited
+                        $query_opts['orderby'] = 'RAND(' . self::get_rand_seed_session() . ')';
 
                         break;
 
@@ -1213,7 +1275,7 @@ class Visual_Portfolio_Get {
                 <?php
             }
             ?>
-            <div class="vp-portfolio__item">
+            <figure class="vp-portfolio__item">
                 <?php
                 $items_style_pref = '';
                 if ( 'default' !== $args['vp_opts']['vp_items_style'] ) {
@@ -1222,7 +1284,7 @@ class Visual_Portfolio_Get {
                 visual_portfolio()->include_template( 'items-list/items-style' . $items_style_pref . '/image', $args );
                 visual_portfolio()->include_template( 'items-list/items-style' . $items_style_pref . '/meta', $args );
                 ?>
-            </div>
+            </figure>
         </div>
         <?php
     }

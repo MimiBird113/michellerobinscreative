@@ -23,50 +23,87 @@ Tags: one-column, flexible-header, accessibility-ready, custom-colors, custom-me
 .button, input[type="submit"] {
   background: none repeat #84013a;
   float: right;
-  margin: 5% 0;
   outline: 1px solid #b79cac;
   outline-offset: -10px;
+  padding: .5rem 1rem;
 
 }
 
 .site-title {
   font-family: 'Stalemate';
-  font-size: 64px;
+  font-size: 45px;
   float: left;
-  padding-top: 2%;
 }
 
 .site-title a {
   color: black!important;
 }
 
+.site-title a:hover {
+  color: #84013a!important;
+}
+
+.site-header {
+    background:#fff;
+    height:5.5em;
+    z-index:170;
+    padding: 2%;
+    margin:0 auto;
+    border-bottom:1px solid #dadada;
+    width:100%;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    text-align: center;
+}
+
 
 .main-menu li a {
   font-family: 'Cinzel' ;
   color: black!important;
-  font-size: 21px;
+  font-size: 16px;
 }
 
-#menu-main-menu {
-  float: right;
-  margin-top: 4%!important;
+.main-menu .white {
+  color: white!important;
 }
+
+.menu-item-266 i:hover,
+.menu-item-267 i:hover {
+  color: #84013a!important;
+}
+
+.menu-item-269 {
+  margin-top: -5%!important;
+  margin-left: 20px;
+}
+
+.button:hover,
+.sales-button:hover {
+  background-color: #84013a;
+}
+
+.main-menu li a:hover {
+  text-decoration: underline;
+}
+
+.hero-content {
+  padding-top: 150px;
+}
+
 
 .rectangle-1, .rectangle-2 {
   background-color: white;
 }
 
-.rectangle-1 {
-  width: 71%;
-}
-
-.rectangle-2 {
-  width: 85%;
+.rectangle-1, .rectangle-2 {
+  width: 75%;
 }
 
 .line-1, .line-2 {
   font-family: 'Cinzel';
-  font-size: 36px;
+  font-size: 18px;
   padding-left: 2%;
   display: block;
 }
@@ -77,28 +114,17 @@ Tags: one-column, flexible-header, accessibility-ready, custom-colors, custom-me
   padding-bottom: 250px;
 }
 
-.sales-button-1 {
-  margin-right: 5%;
-  padding-top: 5%;
-
-}
-
-.sales-button-1 a {
-  font-family: "Mr De Haviland", cursive;
-  font-size: 36px;
-  font-weight: normal;
-  letter-spacing: .07em;
-}
-
-.sales-button-2, .sales-button-3 {
+.sales-button-1, .sales-button-2, .sales-button-3 {
   display: flex;
   justify-content: center;
+  margin: 5% 0;
 }
 
-.sales-button-2 a, .sales-button-3 a {
+.sales-button-1 a, .sales-button-2 a, .sales-button-3 a {
   font-family: "Raleway";
   font-weight: normal;
   text-align: center;
+  font-size: 14px;
 }
 
 
@@ -117,17 +143,22 @@ Tags: one-column, flexible-header, accessibility-ready, custom-colors, custom-me
   }
 
 
-p, h1, h2, h3 {
+p, h1, h2, h3, h4, li {
   font-family: 'Raleway';
+  color: black;
 }
 
-p {
-  font-size: 18px;
+p, li {
+  font-size: 16px;
 }
 
 h3 {
-  font-size: 28px;
+  font-size: 21px;
   text-align: center;
+}
+
+h4 {
+  font-size: 18px;
 }
 
 
@@ -135,11 +166,12 @@ a.button, a.button:link, input[type="submit"] {
 	color:#fff;
 }
 
-a.button:hover, input[type="submit"]:hover,
-a.button:visited {
+a.button:visited, a.button:hover,
+input[type="submit"]:hover
+ {
   background: none repeat #84013a;
   float: right;
-  margin: 5% 0;
+
   outline: 1px solid #b79cac;
   outline-offset: -10px;
 }
@@ -153,48 +185,74 @@ a.button:visited {
 .section-3 h3, .section-3 p {
   margin-left: 8%;
   margin-right: 8%;
+}
+
+.top-half h3 {
   padding-top: 5%;
 }
+
 
 .thought-1, .thought-2, .thought-3 {
   float: left;
   text-align: center;
-  width: 33%;
-
+  width: 100%;
 }
 
 .thoughts {
-  padding-top: 10%;
+  padding-top: 5%;
 }
 
 .bottom-half {
-  padding-top: 13%;
+  padding: 2% 0;
   clear: both;
-  padding-bottom: 10%;
+}
+
+.bottom-half h3 {
+  padding-bottom: 8%;
+  padding-top: 3%;
 }
 
 .divide{
   background-color: white;
-  opacity: 0.75;
+  opacity: 0.85;
   padding: 1%!important;
 }
 
 
+.work {
+  background: url("img/contact.jpg") no-repeat center;
+  background-size: cover;
+}
+.work h3 {
+  padding-top: 3%;
+}
+
+.work-box {
+  padding-top: 3%;
+}
+
+.work h3, .development, .partial, .retainer {
+  margin: 0 8%;
+  background-color: white;
+  opacity: 0.80;
+  padding: 1%;
+}
+
+.sales-button-3 {
+  padding-bottom: 3%;
+}
+
+
 .about-me p, .about-me h3 {
-  margin-left: 15%;
+  margin-left: 5%;
 }
 
 .half-width {
-  width: 50%;
+  width: 100%;
 }
 
 .words {
   float: left;
-}
-
-.photo {
-  float: right;
-  max-width: 35%;
 }
 
 .photo img {
@@ -203,6 +261,12 @@ a.button:visited {
 
 .about-me h3, .contact h3 {
   text-align: left;
+}
+
+
+.final {
+  margin: 0 8%;
+  text-align: center;
 }
 
 .contact {
@@ -245,7 +309,8 @@ input[type="submit"] {
 .page-id-19  .home-page,
 .page-id-21 .home-page,
 .page-id-23 .home-page,
-.page-id-25 .home-page {
+.page-id-25 .home-page
+.page-id-27 .home-page {
   background: none;
 }
 
@@ -512,3 +577,88 @@ body {
 	outline: 0;
 }
 /*End ACCESSIBILITY STYLES*/
+
+/*Media queries */
+@media only screen and (min-width: 768px) {
+  .home-page, .section-3, .work {
+    background-size: cover;
+  }
+
+  .main-menu li a {
+    font-size: 16px;
+}
+  .rectangle-1, .rectangle-2 {
+    width: 70%;
+  }
+
+  .thought-1, .thought-2, .thought-3 {
+    width: 33%;
+  }
+
+  .half-width {
+    width: 50%;
+  }
+
+  .photo {
+    display: block;
+    float: right;
+    max-width: 35%;
+  }
+
+  #menu-main-menu {
+    float: right;
+}
+
+.sales-button-1 a, .sales-button-2 a, .sales-button-3 a {
+  font-size: 18px;
+}
+
+@media only screen and (min-width: 1200px) {
+
+  #menu-main-menu {
+    margin-top: 2%!important;
+  }
+
+  .main-menu li a {
+    font-size: 21px;
+}
+
+  .about-me p, .about-me h3 {
+    margin-left: 15%;
+  }
+
+  .site-title {
+    font-size: 56px;
+    margin-left: -12%;
+  }
+
+  .hero-content {
+    padding-top: 150px;
+  }
+
+  p, li {
+    font-size: 21px;
+  }
+
+  h3 {
+    font-size: 28px;
+    text-align: center;
+  }
+
+  h4 {
+    font-size: 21px;
+  }
+
+  .line-1, .line-2 {
+    font-size: 26px;
+}
+
+.rectangle-1 {
+  width: 75%;
+}
+
+.rectangle-2 {
+  width: 78%;
+}
+
+}
