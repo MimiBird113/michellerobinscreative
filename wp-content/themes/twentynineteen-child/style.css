@@ -88,17 +88,14 @@ Tags: one-column, flexible-header, accessibility-ready, custom-colors, custom-me
   text-decoration: underline;
 }
 
-.hero-content {
+.hero-content, .page-id-21 {
   padding-top: 150px;
 }
 
 
 .rectangle-1, .rectangle-2 {
   background-color: white;
-}
-
-.rectangle-1, .rectangle-2 {
-  width: 75%;
+  max-width: 1000px;
 }
 
 .line-1, .line-2 {
@@ -112,6 +109,16 @@ Tags: one-column, flexible-header, accessibility-ready, custom-colors, custom-me
   margin-left: 15%;
   padding-top: 50px;
   padding-bottom: 250px;
+}
+
+.sales-button a {
+  font-family: 'Raleway'!important;
+  font-weight: 400!important;
+  font-size: 14px!important;
+}
+
+.sales-button-1 {
+  margin-left: -15%!important;
 }
 
 .sales-button-1, .sales-button-2, .sales-button-3 {
@@ -171,7 +178,7 @@ input[type="submit"]:hover
  {
   background: none repeat #84013a;
   float: right;
-
+  text-decoration: underline;
   outline: 1px solid #b79cac;
   outline-offset: -10px;
 }
@@ -609,8 +616,8 @@ body {
     float: right;
 }
 
-.sales-button-1 a, .sales-button-2 a, .sales-button-3 a {
-  font-size: 18px;
+.sales-button a, .sales-button-1 a, .sales-button-2 a, .sales-button-3 a {
+  font-size: 18px!important;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -654,11 +661,11 @@ body {
 }
 
 .rectangle-1 {
-  width: 75%;
+  width: 76%;
 }
 
 .rectangle-2 {
-  width: 78%;
+  width: 76%;
 }
 
 }
